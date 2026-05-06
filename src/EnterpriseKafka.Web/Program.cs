@@ -2,13 +2,13 @@ using EnterpriseKafka.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
-builder.Services.AddSignalR();
-builder.Services.AddEnterpriseKafka();
+builder.Services.AddEnterpriseKafka(options =>
+{
+    options.BootstrapServers = builder.Configuration.GetValue<string>("Kafka:BootstrapServers") ?? "localhost:9092";
+    options.UseMiddleware<LoggingMiddleware>();
+});
 
 var app = builder.Build();
 app.UseStaticFiles();
 app.MapDefaultControllerRoute();
-app.MapHub<MetricsHub>("/hubs/metrics");
 app.Run();
-
-public class MetricsHub : Microsoft.AspNetCore.SignalR.Hub { }

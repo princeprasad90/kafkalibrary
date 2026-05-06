@@ -13,11 +13,6 @@ public sealed class LoggingMiddleware(ILogger<LoggingMiddleware> logger) : IKafk
     }
 }
 
-public sealed class TelemetryMiddleware : IKafkaMiddleware
-{
-    public Task InvokeAsync(KafkaContext context, Func<Task> next, CancellationToken cancellationToken = default) => next();
-}
-
 public sealed class IgnoreStrategy : IMessageFailureStrategy
 {
     public Task HandleFailureAsync(KafkaContext context, Exception exception, CancellationToken cancellationToken = default) => Task.CompletedTask;
