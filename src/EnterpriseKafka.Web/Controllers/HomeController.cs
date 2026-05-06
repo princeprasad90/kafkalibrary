@@ -12,7 +12,7 @@ public class HomeController : Controller
 
 /// <summary>Kafka publish and topic management API.</summary>
 [Route("api/kafka")]
-public class KafkaController(IKafkaProducer producer, ITopicResolver topicResolver) : Controller
+public class KafkaController(IKafkaProducer producer) : Controller
 {
     /// <summary>Publishes a raw JSON payload to the specified topic.</summary>
     [HttpPost("publish")]

@@ -201,11 +201,11 @@
           "dependencies": {
             "OpenTelemetry": {
               "target": "Package",
-              "version": "[1.9.0, )"
+              "version": "[1.15.3, )"
             },
             "OpenTelemetry.Api": {
               "target": "Package",
-              "version": "[1.9.0, )"
+              "version": "[1.15.3, )"
             }
           },
           "imports": [

@@ -13,7 +13,7 @@
         <member name="T:EnterpriseKafka.Web.Controllers.KafkaController">
             <summary>Kafka publish and topic management API.</summary>
         </member>
-        <member name="M:EnterpriseKafka.Web.Controllers.KafkaController.#ctor(EnterpriseKafka.Abstractions.IKafkaProducer,EnterpriseKafka.Abstractions.ITopicResolver)">
+        <member name="M:EnterpriseKafka.Web.Controllers.KafkaController.#ctor(EnterpriseKafka.Abstractions.IKafkaProducer)">
             <summary>Kafka publish and topic management API.</summary>
         </member>
         <member name="M:EnterpriseKafka.Web.Controllers.KafkaController.Publish(EnterpriseKafka.Web.Controllers.PublishRequest,System.Threading.CancellationToken)">
