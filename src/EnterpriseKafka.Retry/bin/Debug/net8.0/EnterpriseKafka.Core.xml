@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Core</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Core.KafkaConsumerHostedService">
+            <summary>
+            Hosted service that starts a consumer loop for each <see cref="T:EnterpriseKafka.Core.ConsumerRegistration"/>
+            configured in <see cref="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Consumers"/>.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.KafkaConsumerHostedService.#ctor(EnterpriseKafka.Core.EnterpriseKafkaOptions,Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Microsoft.Extensions.Logging.ILogger{EnterpriseKafka.Core.KafkaConsumerHostedService},EnterpriseKafka.Abstractions.IMessageSerializer)">
+            <summary>Initializes the hosted service.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.KafkaConsumerHostedService.ExecuteAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Core.LoggingMiddleware">
+            <summary>Middleware that logs each message processing cycle with elapsed time.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.LoggingMiddleware.#ctor(Microsoft.Extensions.Logging.ILogger{EnterpriseKafka.Core.LoggingMiddleware})">
+            <summary>Middleware that logs each message processing cycle with elapsed time.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.LoggingMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Core.TelemetryMiddleware">
+            <summary>Middleware placeholder for telemetry (see EnterpriseKafka.Telemetry for full impl).</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.TelemetryMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Core.IgnoreStrategy">
+            <summary>Failure strategy that silently ignores all errors.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.IgnoreStrategy.HandleFailureAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Exception,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Core.StopConsumerStrategy">
+            <summary>Failure strategy that re-throws to stop the consumer loop.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.StopConsumerStrategy.HandleFailureAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Exception,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Core.DeadLetterStrategy">
+            <summary>
+            Failure strategy that publishes the failed message to a dead-letter topic
+            (<c>{original-topic}-dlq</c>) via <see cref="T:EnterpriseKafka.Abstractions.IKafkaProducer"/>.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.DeadLetterStrategy.#ctor(EnterpriseKafka.Abstractions.IKafkaProducer)">
+            <summary>
+            Failure strategy that publishes the failed message to a dead-letter topic
+            (<c>{original-topic}-dlq</c>) via <see cref="T:EnterpriseKafka.Abstractions.IKafkaProducer"/>.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.DeadLetterStrategy.HandleFailureAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Exception,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Core.MiddlewarePipeline">
+            <summary>
+            Builds and executes a chain of <see cref="T:EnterpriseKafka.Abstractions.IKafkaMiddleware"/> instances around a terminal action.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.MiddlewarePipeline.#ctor(System.Collections.Generic.IEnumerable{EnterpriseKafka.Abstractions.IKafkaMiddleware})">
+            <summary>Initialises the pipeline with an ordered list of middleware.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.MiddlewarePipeline.ExecuteAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <summary>Executes the middleware chain, calling <paramref name="terminal"/> at the end.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Core.ConsumerRegistration">
+            <summary>Registration for a typed Kafka consumer.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ConsumerRegistration.HandlerType">
+            <summary>The <see cref="T:EnterpriseKafka.Abstractions.IKafkaHandler`1"/> implementation type.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ConsumerRegistration.MessageType">
+            <summary>The message type this consumer handles.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ConsumerRegistration.Topic">
+            <summary>The Kafka topic to subscribe to.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ConsumerRegistration.GroupId">
+            <summary>The consumer group id.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ConsumerRegistration.FailureStrategy">
+            <summary>Optional failure strategy type (<see cref="T:EnterpriseKafka.Abstractions.IMessageFailureStrategy"/>).</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Core.EnterpriseKafkaOptions">
+            <summary>Top-level options for the EnterpriseKafka framework.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.BootstrapServers">
+            <summary>Kafka bootstrap servers (comma-separated).</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Producer">
+            <summary>Producer-specific options.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Consumer">
+            <summary>Default consumer options.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Retry">
+            <summary>Retry options.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.TopicMappings">
+            <summary>Manual topic-name overrides keyed by full type name.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Middlewares">
+            <summary>Registered middleware pipeline types (in order).</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Consumers">
+            <summary>Typed consumer registrations added via AddKafkaConsumer extensions.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.EnterpriseKafkaOptions.UseMiddleware``1">
+            <summary>Adds a middleware to the pipeline.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.EnterpriseKafkaOptions.UseLogging">
+            <summary>Enables structured logging middleware.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.EnterpriseKafkaOptions.UseTelemetry">
+            <summary>Enables telemetry middleware.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.EnterpriseKafkaOptions.UseRetry">
+            <summary>Enables retry middleware (requires EnterpriseKafka.Retry).</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Core.ProducerOptions">
+            <summary>Kafka producer configuration.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ProducerOptions.EnableIdempotence">
+            <summary>Whether to enable idempotent producers.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Core.ConsumerOptions">
+            <summary>Default consumer configuration.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ConsumerOptions.GroupId">
+            <summary>Default consumer group id.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.ConsumerOptions.Concurrency">
+            <summary>Number of concurrent consumer loops.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Core.RetryOptions">
+            <summary>Retry behaviour configuration.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.RetryOptions.MaxRetries">
+            <summary>Maximum retry attempts.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.RetryOptions.BaseDelayMs">
+            <summary>Base delay between retries in milliseconds.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Core.RetryOptions.UseExponentialBackoff">
+            <summary>Use exponential backoff between retries.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Core.ServiceCollectionExtensions">
+            <summary>DI extension methods for EnterpriseKafka.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Core.ServiceCollectionExtensions.AddEnterpriseKafka(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{EnterpriseKafka.Core.EnterpriseKafkaOptions})">
+            <summary>Registers the EnterpriseKafka framework services.</summary>
+        </member>
+    </members>
+</doc>

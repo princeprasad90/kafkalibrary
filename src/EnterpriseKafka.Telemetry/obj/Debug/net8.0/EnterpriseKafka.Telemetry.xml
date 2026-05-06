@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Telemetry</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Telemetry.KafkaTelemetry">
+            <summary>Static <see cref="T:System.Diagnostics.ActivitySource"/> for EnterpriseKafka distributed tracing.</summary>
+        </member>
+        <member name="F:EnterpriseKafka.Telemetry.KafkaTelemetry.ActivitySourceName">
+            <summary>ActivitySource name used for all Kafka spans.</summary>
+        </member>
+        <member name="F:EnterpriseKafka.Telemetry.KafkaTelemetry.ActivitySourceVersion">
+            <summary>Version reported on activities.</summary>
+        </member>
+        <member name="F:EnterpriseKafka.Telemetry.KafkaTelemetry.Source">
+            <summary>The shared <see cref="T:System.Diagnostics.ActivitySource"/> instance.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Telemetry.KafkaMetrics">
+            <summary>OTel metrics for the EnterpriseKafka framework.</summary>
+        </member>
+        <member name="F:EnterpriseKafka.Telemetry.KafkaMetrics.MessagesProduced">
+            <summary>Counter incremented when a message is successfully produced.</summary>
+        </member>
+        <member name="F:EnterpriseKafka.Telemetry.KafkaMetrics.MessagesConsumed">
+            <summary>Counter incremented when a message is successfully consumed.</summary>
+        </member>
+        <member name="F:EnterpriseKafka.Telemetry.KafkaMetrics.MessagesFailed">
+            <summary>Counter incremented when message processing fails.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Telemetry.TelemetryMiddleware">
+            <summary>
+            Middleware that starts an <see cref="T:System.Diagnostics.Activity"/> span and records OTel metrics for each
+            message processed.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Telemetry.TelemetryMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Telemetry.TelemetryExtensions">
+            <summary>DI extension methods for telemetry support.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Telemetry.TelemetryExtensions.AddKafkaTelemetry(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>Registers <see cref="T:EnterpriseKafka.Telemetry.TelemetryMiddleware"/> with the DI container.</summary>
+        </member>
+    </members>
+</doc>

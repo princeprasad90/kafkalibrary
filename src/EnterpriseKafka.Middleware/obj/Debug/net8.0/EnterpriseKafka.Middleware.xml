@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Middleware</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Middleware.CorrelationMiddleware">
+            <summary>
+            Ensures an <c>x-correlation-id</c> is present in the context and stores it in
+            <see cref="P:EnterpriseKafka.Abstractions.KafkaContext.Items"/>.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Middleware.CorrelationMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Middleware.ValidationMiddleware">
+            <summary>
+            Validates that the message is not null and the topic name is not empty before
+            passing control to the next middleware.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Middleware.ValidationMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Middleware.ExceptionHandlingMiddleware">
+            <summary>
+            Catches unhandled exceptions from downstream middleware/handlers, logs them,
+            and delegates to <see cref="T:EnterpriseKafka.Abstractions.IMessageFailureStrategy"/> if available.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Middleware.ExceptionHandlingMiddleware.#ctor(EnterpriseKafka.Abstractions.IMessageFailureStrategy,Microsoft.Extensions.Logging.ILogger{EnterpriseKafka.Middleware.ExceptionHandlingMiddleware})">
+            <summary>
+            Catches unhandled exceptions from downstream middleware/handlers, logs them,
+            and delegates to <see cref="T:EnterpriseKafka.Abstractions.IMessageFailureStrategy"/> if available.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Middleware.ExceptionHandlingMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Middleware.MiddlewareExtensions">
+            <summary>DI extension methods for the middleware package.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Middleware.MiddlewareExtensions.AddKafkaMiddleware(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Registers <see cref="T:EnterpriseKafka.Middleware.CorrelationMiddleware"/>, <see cref="T:EnterpriseKafka.Middleware.ValidationMiddleware"/>,
+            and <see cref="T:EnterpriseKafka.Middleware.ExceptionHandlingMiddleware"/> with the DI container.
+            </summary>
+        </member>
+    </members>
+</doc>

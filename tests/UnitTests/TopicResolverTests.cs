@@ -1,5 +1,6 @@
 using EnterpriseKafka.Abstractions;
 using EnterpriseKafka.Core;
+using FluentAssertions;
 
 namespace UnitTests;
 

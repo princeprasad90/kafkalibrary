@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Testing</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Testing.FakeKafkaProducer">
+            <summary>
+            In-memory <see cref="T:EnterpriseKafka.Abstractions.IKafkaProducer"/> for use in unit and integration tests.
+            Records all published messages without connecting to a real Kafka cluster.
+            </summary>
+        </member>
+        <member name="P:EnterpriseKafka.Testing.FakeKafkaProducer.PublishedMessages">
+            <summary>All messages published since the producer was created.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.FakeKafkaProducer.PublishAsync``1(``0,EnterpriseKafka.Abstractions.KafkaPublishOptions,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:EnterpriseKafka.Testing.FakeKafkaProducer.PublishBatchAsync``1(System.Collections.Generic.IReadOnlyCollection{``0},EnterpriseKafka.Abstractions.KafkaPublishOptions,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:EnterpriseKafka.Testing.FakeKafkaProducer.SentMessages``1">
+            <summary>Returns all published messages of type <typeparamref name="T"/>.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.FakeKafkaProducer.Reset">
+            <summary>Clears all recorded messages.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Testing.InMemoryKafkaBus">
+            <summary>
+            In-memory Kafka bus for integration testing. Supports publish/subscribe without a real broker.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.InMemoryKafkaBus.Publish``1(``0,System.Threading.CancellationToken)">
+            <summary>Publishes a message to the in-memory bus.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.InMemoryKafkaBus.Subscribe``1(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task})">
+            <summary>Subscribes a handler to messages of type <typeparamref name="T"/>.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.InMemoryKafkaBus.GetMessages``1">
+            <summary>Returns all published messages of type <typeparamref name="T"/>.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.InMemoryKafkaBus.Reset">
+            <summary>Clears all recorded messages.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Testing.KafkaTestHarness">
+            <summary>
+            Test harness that wires together a <see cref="T:EnterpriseKafka.Testing.FakeKafkaProducer"/> and
+            <see cref="T:EnterpriseKafka.Testing.InMemoryKafkaBus"/> for handler integration tests.
+            </summary>
+        </member>
+        <member name="P:EnterpriseKafka.Testing.KafkaTestHarness.Producer">
+            <summary>The fake producer used in this harness.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Testing.KafkaTestHarness.Bus">
+            <summary>The in-memory bus used in this harness.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.KafkaTestHarness.Reset">
+            <summary>Resets both the producer and bus.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Testing.MockTopicResolver">
+            <summary>Configurable mock <see cref="T:EnterpriseKafka.Abstractions.ITopicResolver"/> for test scenarios.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.MockTopicResolver.ForType``1(System.String)">
+            <summary>Configures a static topic name for type <typeparamref name="T"/>.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Testing.MockTopicResolver.ResolveTopic``1">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

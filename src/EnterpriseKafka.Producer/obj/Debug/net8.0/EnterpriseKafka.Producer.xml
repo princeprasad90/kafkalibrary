@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Producer</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Producer.ProducerExtensions">
+            <summary>Extension methods for <see cref="T:EnterpriseKafka.Abstractions.IKafkaProducer"/> and producer DI registration.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Producer.ProducerExtensions.PublishToTopicAsync``1(EnterpriseKafka.Abstractions.IKafkaProducer,System.String,``0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Publishes a message to an explicit topic, overriding any resolved topic name.
+            </summary>
+            <typeparam name="T">Message type.</typeparam>
+            <param name="producer">The producer instance.</param>
+            <param name="topic">The target Kafka topic.</param>
+            <param name="message">The message payload.</param>
+            <param name="key">Optional partition key.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+        </member>
+        <member name="M:EnterpriseKafka.Producer.ProducerExtensions.PublishWithRetryAsync``1(EnterpriseKafka.Abstractions.IKafkaProducer,``0,System.Int32,EnterpriseKafka.Abstractions.KafkaPublishOptions,System.Threading.CancellationToken)">
+            <summary>
+            Publishes a message with a simple linear retry on transient failures.
+            </summary>
+            <typeparam name="T">Message type.</typeparam>
+            <param name="producer">The producer instance.</param>
+            <param name="message">The message payload.</param>
+            <param name="retryCount">Number of additional attempts after the first failure.</param>
+            <param name="options">Optional publish options.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+        </member>
+        <member name="M:EnterpriseKafka.Producer.ProducerExtensions.AddKafkaProducer(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{EnterpriseKafka.Core.EnterpriseKafkaOptions})">
+            <summary>
+            Registers <see cref="T:EnterpriseKafka.Abstractions.IKafkaProducer"/> with custom options and all required core services.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="configure">Optional configuration callback.</param>
+        </member>
+    </members>
+</doc>

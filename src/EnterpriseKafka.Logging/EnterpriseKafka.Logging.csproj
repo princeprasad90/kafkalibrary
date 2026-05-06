@@ -3,4 +3,10 @@
     <ProjectReference Include="../EnterpriseKafka.Abstractions/EnterpriseKafka.Abstractions.csproj" />
     <ProjectReference Include="../EnterpriseKafka.Core/EnterpriseKafka.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="4.1.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
+  </ItemGroup>
 </Project>
