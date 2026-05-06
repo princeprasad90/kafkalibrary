@@ -26,9 +26,12 @@
         const resultBox = document.getElementById('resultBox');
         const resultAlert = document.getElementById('resultAlert');
 
-        const body = new URLSearchParams({ topic, key, payload });
         try {
-            const response = await fetch('/Home/Publish', { method: 'POST', body });
+            const response = await fetch('/Home/Publish', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, key, payload })
+            });
             const data = await response.json();
             resultBox.style.display = '';
             resultAlert.className = 'alert mb-0 ' + (data.success ? 'alert-success' : 'alert-danger');
