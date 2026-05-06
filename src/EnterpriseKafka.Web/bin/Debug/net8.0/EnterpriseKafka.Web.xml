@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Web</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Web.Controllers.HomeController">
+            <summary>Dashboard and status controller.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.HomeController.Index">
+            <summary>Renders the developer dashboard.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Web.Controllers.KafkaController">
+            <summary>Kafka publish and topic management API.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.KafkaController.#ctor(EnterpriseKafka.Abstractions.IKafkaProducer)">
+            <summary>Kafka publish and topic management API.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.KafkaController.Publish(EnterpriseKafka.Web.Controllers.PublishRequest,System.Threading.CancellationToken)">
+            <summary>Publishes a raw JSON payload to the specified topic.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.KafkaController.Topics(System.String)">
+            <summary>Returns the resolved topic name for a known type name.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Web.Controllers.PublishRequest">
+            <summary>Request body for the Publish action.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Web.Controllers.PublishRequest.Topic">
+            <summary>Target Kafka topic.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Web.Controllers.PublishRequest.Key">
+            <summary>Optional partition key.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Web.Controllers.PublishRequest.Payload">
+            <summary>Raw JSON payload (stored as dynamic object).</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Web.Controllers.MonitorController">
+            <summary>Consumer monitoring controller.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.MonitorController.Index">
+            <summary>Renders the consumer status dashboard.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.MonitorController.Status">
+            <summary>Returns consumer status as JSON.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Web.Controllers.LoadTestController">
+            <summary>Load-test endpoint for developer testing.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.LoadTestController.#ctor(EnterpriseKafka.Abstractions.IKafkaProducer)">
+            <summary>Load-test endpoint for developer testing.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Web.Controllers.LoadTestController.Run(System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>Publishes <paramref name="count"/> test messages to the given topic.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Web.MetricsHub">
+            <summary>SignalR hub for broadcasting real-time Kafka metrics to connected clients.</summary>
+        </member>
+    </members>
+</doc>

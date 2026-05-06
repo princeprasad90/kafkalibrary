@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Retry</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Retry.KafkaRetryPolicy">
+            <summary>Builds Polly <see cref="T:Polly.ResiliencePipeline"/> instances for Kafka operations.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Retry.KafkaRetryPolicy.BuildImmediate(System.Int32)">
+            <summary>Creates an immediate-retry pipeline.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Retry.KafkaRetryPolicy.BuildDelayed(System.Int32,System.Nullable{System.TimeSpan})">
+            <summary>Creates a fixed-delay retry pipeline.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Retry.KafkaRetryPolicy.BuildExponential(System.Int32,System.Nullable{System.TimeSpan})">
+            <summary>Creates an exponential-backoff retry pipeline.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Retry.KafkaRetryPolicy.FromOptions(EnterpriseKafka.Core.RetryOptions)">
+            <summary>Creates a pipeline from <see cref="T:EnterpriseKafka.Core.RetryOptions"/>.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Retry.RetryMiddleware">
+            <summary>
+            Middleware that wraps handler execution in a Polly retry pipeline derived from
+            <see cref="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Retry"/>.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Retry.RetryMiddleware.#ctor(EnterpriseKafka.Core.EnterpriseKafkaOptions,Microsoft.Extensions.Logging.ILogger{EnterpriseKafka.Retry.RetryMiddleware})">
+            <summary>
+            Middleware that wraps handler execution in a Polly retry pipeline derived from
+            <see cref="P:EnterpriseKafka.Core.EnterpriseKafkaOptions.Retry"/>.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Retry.RetryMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Retry.RetryExtensions">
+            <summary>DI extension methods for retry support.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Retry.RetryExtensions.AddKafkaRetry(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>Registers <see cref="T:EnterpriseKafka.Retry.RetryMiddleware"/> and adds it to the middleware pipeline.</summary>
+        </member>
+    </members>
+</doc>

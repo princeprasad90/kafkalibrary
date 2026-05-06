@@ -3,4 +3,8 @@
     <ProjectReference Include="../EnterpriseKafka.Abstractions/EnterpriseKafka.Abstractions.csproj" />
     <ProjectReference Include="../EnterpriseKafka.Core/EnterpriseKafka.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Confluent.Kafka" Version="2.5.3" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.8" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Logging</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Logging.KafkaLogContext">
+            <summary>Provides helper methods for enriching Serilog log context with Kafka properties.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Logging.KafkaLogContext.Push(EnterpriseKafka.Abstractions.KafkaContext,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Pushes standard Kafka properties onto the Serilog <see cref="T:Serilog.Context.LogContext"/> for the
+            duration of the returned disposable.
+            </summary>
+        </member>
+        <member name="T:EnterpriseKafka.Logging.SerilogKafkaMiddleware">
+            <summary>
+            Middleware that enriches the Serilog <see cref="T:Serilog.Context.LogContext"/> with Kafka metadata for every
+            message processed in the pipeline.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.Logging.SerilogKafkaMiddleware.InvokeAsync(EnterpriseKafka.Abstractions.KafkaContext,System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Logging.LoggingExtensions">
+            <summary>DI extension methods for Kafka logging support.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Logging.LoggingExtensions.AddKafkaLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>Registers <see cref="T:EnterpriseKafka.Logging.SerilogKafkaMiddleware"/> with the DI container.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Logging.LoggingExtensions.UseKafkaSerilog(Microsoft.Extensions.Hosting.IHostBuilder,System.Action{Serilog.LoggerConfiguration})">
+            <summary>
+            Configures the <see cref="T:Microsoft.Extensions.Hosting.IHostBuilder"/> to use Serilog and enriches log context with
+            Kafka-specific properties via <see cref="T:EnterpriseKafka.Logging.SerilogKafkaMiddleware"/>.
+            </summary>
+        </member>
+    </members>
+</doc>

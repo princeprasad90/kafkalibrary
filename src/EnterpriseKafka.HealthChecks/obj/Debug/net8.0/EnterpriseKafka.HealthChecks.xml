@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.HealthChecks</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.HealthChecks.KafkaBrokerHealthCheck">
+            <summary>Health check that tests TCP connectivity to the Kafka bootstrap servers.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.HealthChecks.KafkaBrokerHealthCheck.#ctor(EnterpriseKafka.Core.EnterpriseKafkaOptions,Microsoft.Extensions.Logging.ILogger{EnterpriseKafka.HealthChecks.KafkaBrokerHealthCheck})">
+            <summary>Health check that tests TCP connectivity to the Kafka bootstrap servers.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.HealthChecks.KafkaBrokerHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.HealthChecks.KafkaConsumerLagHealthCheck">
+            <summary>
+            Health check that monitors consumer group lag and reports degraded/unhealthy
+            when lag exceeds the configured threshold.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.HealthChecks.KafkaConsumerLagHealthCheck.#ctor(EnterpriseKafka.Core.EnterpriseKafkaOptions,Microsoft.Extensions.Logging.ILogger{EnterpriseKafka.HealthChecks.KafkaConsumerLagHealthCheck},System.Int64)">
+            <summary>
+            Health check that monitors consumer group lag and reports degraded/unhealthy
+            when lag exceeds the configured threshold.
+            </summary>
+        </member>
+        <member name="M:EnterpriseKafka.HealthChecks.KafkaConsumerLagHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.HealthChecks.HealthCheckExtensions">
+            <summary>Extension methods for registering Kafka health checks.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.HealthChecks.HealthCheckExtensions.AddKafkaBroker(Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder,System.String,Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>Adds a broker connectivity health check.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.HealthChecks.HealthCheckExtensions.AddKafkaConsumerLag(Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder,System.Int64,System.String,Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>Adds a consumer-lag health check.</summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Configuration</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Configuration.KafkaConfigurationSection">
+            <summary>POCO matching the <c>EnterpriseKafka</c> section in appsettings.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaConfigurationSection.BootstrapServers">
+            <summary>Kafka bootstrap servers (comma-separated).</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaConfigurationSection.Producer">
+            <summary>Producer settings.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaConfigurationSection.Consumer">
+            <summary>Consumer settings.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaConfigurationSection.Retry">
+            <summary>Retry settings.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaConfigurationSection.TopicMappings">
+            <summary>Manual topic overrides.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Configuration.KafkaProducerSection">
+            <summary>Producer sub-section.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaProducerSection.EnableIdempotence">
+            <summary>Enable idempotent producer.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Configuration.KafkaConsumerSection">
+            <summary>Consumer sub-section.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaConsumerSection.GroupId">
+            <summary>Default consumer group id.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaConsumerSection.Concurrency">
+            <summary>Consumer loop concurrency.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Configuration.KafkaRetrySection">
+            <summary>Retry sub-section.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaRetrySection.MaxRetries">
+            <summary>Max retry attempts.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaRetrySection.BaseDelayMs">
+            <summary>Base delay in milliseconds.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Configuration.KafkaRetrySection.UseExponentialBackoff">
+            <summary>Use exponential backoff.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Configuration.KafkaOptionsValidator">
+            <summary>Validates <see cref="T:EnterpriseKafka.Core.EnterpriseKafkaOptions"/> at startup.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Configuration.KafkaOptionsValidator.Validate(System.String,EnterpriseKafka.Core.EnterpriseKafkaOptions)">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Configuration.ConfigurationExtensions">
+            <summary>DI extension methods for configuration-driven setup.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Configuration.ConfigurationExtensions.AddKafkaConfiguration(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Loads <see cref="T:EnterpriseKafka.Core.EnterpriseKafkaOptions"/> from the <c>EnterpriseKafka</c> configuration
+            section and registers core services.
+            </summary>
+        </member>
+    </members>
+</doc>

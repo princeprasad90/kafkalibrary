@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Consumer</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Consumer.ConsumerExtensions">
+            <summary>Extension methods for registering typed Kafka consumers.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Consumer.ConsumerExtensions.AddKafkaConsumer``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{EnterpriseKafka.Core.ConsumerRegistration})">
+            <summary>
+            Registers a typed consumer for <typeparamref name="TMessage"/> using
+            <typeparamref name="THandler"/>, with optional configuration.
+            </summary>
+            <typeparam name="TMessage">The message type consumed.</typeparam>
+            <typeparam name="THandler">The handler implementation.</typeparam>
+            <param name="services">The service collection.</param>
+            <param name="configure">Optional callback to customise the registration.</param>
+        </member>
+        <member name="M:EnterpriseKafka.Consumer.ConsumerExtensions.AddKafkaConsumer``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String,System.String)">
+            <summary>
+            Registers a typed consumer for <typeparamref name="TMessage"/> using
+            <typeparamref name="THandler"/> with explicit topic and group id.
+            </summary>
+            <typeparam name="TMessage">The message type consumed.</typeparam>
+            <typeparam name="THandler">The handler implementation.</typeparam>
+            <param name="services">The service collection.</param>
+            <param name="topic">The Kafka topic to subscribe to.</param>
+            <param name="groupId">The consumer group id.</param>
+        </member>
+        <member name="M:EnterpriseKafka.Consumer.ConsumerExtensions.GetOrCreateEnterpriseKafkaOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Retrieves the singleton <see cref="T:EnterpriseKafka.Core.EnterpriseKafkaOptions"/> from the service collection,
+            or creates and registers one if not yet present.
+            </summary>
+        </member>
+    </members>
+</doc>

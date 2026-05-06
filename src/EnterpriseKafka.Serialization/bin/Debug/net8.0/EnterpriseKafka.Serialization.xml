@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnterpriseKafka.Serialization</name>
+    </assembly>
+    <members>
+        <member name="T:EnterpriseKafka.Serialization.MessageEnvelope`1">
+            <summary>Wraps a message payload with metadata for envelope-based messaging.</summary>
+            <typeparam name="T">The message payload type.</typeparam>
+            <param name="CorrelationId">Unique correlation identifier.</param>
+            <param name="Timestamp">UTC timestamp when the envelope was created.</param>
+            <param name="Version">Schema/contract version of the payload.</param>
+            <param name="Payload">The actual message payload.</param>
+        </member>
+        <member name="M:EnterpriseKafka.Serialization.MessageEnvelope`1.#ctor(System.String,System.DateTimeOffset,System.String,`0)">
+            <summary>Wraps a message payload with metadata for envelope-based messaging.</summary>
+            <typeparam name="T">The message payload type.</typeparam>
+            <param name="CorrelationId">Unique correlation identifier.</param>
+            <param name="Timestamp">UTC timestamp when the envelope was created.</param>
+            <param name="Version">Schema/contract version of the payload.</param>
+            <param name="Payload">The actual message payload.</param>
+        </member>
+        <member name="P:EnterpriseKafka.Serialization.MessageEnvelope`1.CorrelationId">
+            <summary>Unique correlation identifier.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Serialization.MessageEnvelope`1.Timestamp">
+            <summary>UTC timestamp when the envelope was created.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Serialization.MessageEnvelope`1.Version">
+            <summary>Schema/contract version of the payload.</summary>
+        </member>
+        <member name="P:EnterpriseKafka.Serialization.MessageEnvelope`1.Payload">
+            <summary>The actual message payload.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Serialization.MessageEnvelope`1.Wrap(`0,System.String,System.String)">
+            <summary>Creates a new envelope with current time and default version.</summary>
+        </member>
+        <member name="T:EnterpriseKafka.Serialization.MessageEnvelopeSerializer`1">
+            <summary>
+            Serialiser that wraps each message in a <see cref="T:EnterpriseKafka.Serialization.MessageEnvelope`1"/> before
+            serialising, and unwraps on deserialisation.
+            </summary>
+            <typeparam name="T">Message payload type.</typeparam>
+        </member>
+        <member name="M:EnterpriseKafka.Serialization.MessageEnvelopeSerializer`1.#ctor(EnterpriseKafka.Abstractions.IMessageSerializer)">
+            <summary>
+            Serialiser that wraps each message in a <see cref="T:EnterpriseKafka.Serialization.MessageEnvelope`1"/> before
+            serialising, and unwraps on deserialisation.
+            </summary>
+            <typeparam name="T">Message payload type.</typeparam>
+        </member>
+        <member name="M:EnterpriseKafka.Serialization.MessageEnvelopeSerializer`1.Serialize``1(``0)">
+            <inheritdoc />
+        </member>
+        <member name="M:EnterpriseKafka.Serialization.MessageEnvelopeSerializer`1.Deserialize``1(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:EnterpriseKafka.Serialization.SerializationExtensions">
+            <summary>DI extension methods for serialisation support.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Serialization.SerializationExtensions.AddKafkaJsonSerializer(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>Registers the default JSON <see cref="T:EnterpriseKafka.Abstractions.IMessageSerializer"/>.</summary>
+        </member>
+        <member name="M:EnterpriseKafka.Serialization.SerializationExtensions.AddKafkaSerializer``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>Registers a custom <see cref="T:EnterpriseKafka.Abstractions.IMessageSerializer"/>.</summary>
+        </member>
+    </members>
+</doc>

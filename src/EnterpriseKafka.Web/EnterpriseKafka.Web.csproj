@@ -2,6 +2,9 @@
   <ItemGroup>
     <ProjectReference Include="../EnterpriseKafka.Core/EnterpriseKafka.Core.csproj" />
     <ProjectReference Include="../EnterpriseKafka.Abstractions/EnterpriseKafka.Abstractions.csproj" />
+    <ProjectReference Include="../EnterpriseKafka.Consumer/EnterpriseKafka.Consumer.csproj" />
+    <ProjectReference Include="../EnterpriseKafka.Producer/EnterpriseKafka.Producer.csproj" />
+    <ProjectReference Include="../EnterpriseKafka.HealthChecks/EnterpriseKafka.HealthChecks.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
