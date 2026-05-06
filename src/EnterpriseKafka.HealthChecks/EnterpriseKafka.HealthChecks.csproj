@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../EnterpriseKafka.Abstractions/EnterpriseKafka.Abstractions.csproj" />
+    <ProjectReference Include="../EnterpriseKafka.Core/EnterpriseKafka.Core.csproj" />
+  </ItemGroup>
+</Project>
