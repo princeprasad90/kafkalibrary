@@ -4,11 +4,42 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
 <div class="container py-4">
     <h3>EnterpriseKafka Internal Test Utility</h3>
-    <p class="text-muted">Lightweight publisher/monitor shell for developers.</p>
+    <p class="text-muted">Lightweight publisher shell for developers.</p>
     <div class="row g-3">
         <div class="col-md-6"><input id="topic" class="form-control" placeholder="Topic" /></div>
-        <div class="col-md-6"><input id="key" class="form-control" placeholder="Partition Key" /></div>
-        <div class="col-12"><textarea id="payload" class="form-control" rows="8" placeholder='{"id":1}'></textarea></div>
-        <div class="col-12"><button class="btn btn-primary">Publish</button></div>
+        <div class="col-md-6"><input id="key" class="form-control" placeholder="Partition Key (optional)" /></div>
+        <div class="col-12"><textarea id="payload" class="form-control" rows="8" placeholder='{"orderId":"A-100","amount":99.99}'></textarea></div>
+        <div class="col-12">
+            <button id="publishBtn" class="btn btn-primary">Publish</button>
+        </div>
+        <div class="col-12" id="resultBox" style="display:none">
+            <div id="resultAlert" class="alert mb-0" role="alert"></div>
+        </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('publishBtn').addEventListener('click', async () => {
+        const topic = document.getElementById('topic').value.trim();
+        const key = document.getElementById('key').value.trim();
+        const payload = document.getElementById('payload').value.trim();
+        const resultBox = document.getElementById('resultBox');
+        const resultAlert = document.getElementById('resultAlert');
+
+        try {
+            const response = await fetch('/Home/Publish', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, key, payload })
+            });
+            const data = await response.json();
+            resultBox.style.display = '';
+            resultAlert.className = 'alert mb-0 ' + (data.success ? 'alert-success' : 'alert-danger');
+            resultAlert.textContent = data.message;
+        } catch (err) {
+            resultBox.style.display = '';
+            resultAlert.className = 'alert mb-0 alert-danger';
+            resultAlert.textContent = 'Request failed: ' + err.message;
+        }
+    });
+</script>

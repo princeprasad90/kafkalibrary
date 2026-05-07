@@ -36,7 +36,6 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<KafkaConsumerHostedService>();
         services.AddSingleton<IMessageFailureStrategy, IgnoreStrategy>();
         services.AddTransient<LoggingMiddleware>();
-        services.AddTransient<TelemetryMiddleware>();
         return services;
     }
 }
