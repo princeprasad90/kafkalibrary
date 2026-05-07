@@ -3,22 +3,99 @@
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
 <div class="container py-4">
-    <h3>EnterpriseKafka Internal Test Utility</h3>
-    <p class="text-muted">Lightweight publisher shell for developers.</p>
-    <div class="row g-3">
-        <div class="col-md-6"><input id="topic" class="form-control" placeholder="Topic" /></div>
-        <div class="col-md-6"><input id="key" class="form-control" placeholder="Partition Key (optional)" /></div>
-        <div class="col-12"><textarea id="payload" class="form-control" rows="8" placeholder='{"orderId":"A-100","amount":99.99}'></textarea></div>
-        <div class="col-12">
-            <button id="publishBtn" class="btn btn-primary">Publish</button>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h3 class="mb-1">EnterpriseKafka Test Console</h3>
+            <p class="text-muted mb-0">Publish test messages, subscribe to a Kafka topic, and watch messages arrive in realtime.</p>
         </div>
-        <div class="col-12" id="resultBox" style="display:none">
-            <div id="resultAlert" class="alert mb-0" role="alert"></div>
+        <span id="consumerBadge" class="badge text-bg-secondary">Consumer stopped</span>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card h-100">
+                <div class="card-header fw-semibold">Send message</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="topic" class="form-label">Topic</label>
+                        <input id="topic" class="form-control" placeholder="orders.created" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="key" class="form-label">Partition key (optional)</label>
+                        <input id="key" class="form-control" placeholder="A-100" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="payload" class="form-label">JSON payload</label>
+                        <textarea id="payload" class="form-control font-monospace" rows="10" placeholder='{"orderId":"A-100","amount":99.99}'></textarea>
+                    </div>
+                    <button id="publishBtn" class="btn btn-primary">Publish</button>
+                    <div class="mt-3" id="resultBox" style="display:none">
+                        <div id="resultAlert" class="alert mb-0" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card mb-4">
+                <div class="card-header fw-semibold">Receive messages</div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-5">
+                            <label for="consumeTopic" class="form-label">Topic</label>
+                            <input id="consumeTopic" class="form-control" placeholder="orders.created" />
+                        </div>
+                        <div class="col-md-5">
+                            <label for="groupId" class="form-label">Consumer group</label>
+                            <input id="groupId" class="form-control" placeholder="enterprise-kafka-web" />
+                        </div>
+                        <div class="col-md-2 form-check mb-2">
+                            <input id="fromBeginning" class="form-check-input" type="checkbox" />
+                            <label for="fromBeginning" class="form-check-label">Earliest</label>
+                        </div>
+                        <div class="col-12 d-flex gap-2">
+                            <button id="startConsumerBtn" class="btn btn-success">Start consumer</button>
+                            <button id="stopConsumerBtn" class="btn btn-outline-secondary">Stop consumer</button>
+                        </div>
+                    </div>
+                    <div class="mt-3" id="consumerResultBox" style="display:none">
+                        <div id="consumerResultAlert" class="alert mb-0" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span class="fw-semibold">Realtime messages</span>
+                    <small class="text-muted">Latest 100 retained in memory</small>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>Received (UTC)</th>
+                                <th>Topic</th>
+                                <th>Key</th>
+                                <th>Partition/Offset</th>
+                                <th>Payload</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesBody">
+                            <tr id="emptyRow"><td colspan="5" class="text-muted">No messages received yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.7/dist/browser/signalr.min.js"></script>
 <script>
+    const messagesBody = document.getElementById('messagesBody');
+    const emptyRow = document.getElementById('emptyRow');
+    const consumerBadge = document.getElementById('consumerBadge');
+
     document.getElementById('publishBtn').addEventListener('click', async () => {
         const topic = document.getElementById('topic').value.trim();
         const key = document.getElementById('key').value.trim();
@@ -33,13 +110,83 @@
                 body: JSON.stringify({ topic, key, payload })
             });
             const data = await response.json();
-            resultBox.style.display = '';
-            resultAlert.className = 'alert mb-0 ' + (data.success ? 'alert-success' : 'alert-danger');
-            resultAlert.textContent = data.message;
+            showAlert(resultBox, resultAlert, data.success, data.message);
         } catch (err) {
-            resultBox.style.display = '';
-            resultAlert.className = 'alert mb-0 alert-danger';
-            resultAlert.textContent = 'Request failed: ' + err.message;
+            showAlert(resultBox, resultAlert, false, 'Request failed: ' + err.message);
         }
     });
+
+    document.getElementById('startConsumerBtn').addEventListener('click', async () => {
+        const request = {
+            topic: document.getElementById('consumeTopic').value.trim(),
+            groupId: document.getElementById('groupId').value.trim(),
+            fromBeginning: document.getElementById('fromBeginning').checked
+        };
+        await postConsumerCommand('/Home/StartConsumer', request);
+    });
+
+    document.getElementById('stopConsumerBtn').addEventListener('click', async () => {
+        await postConsumerCommand('/Home/StopConsumer', {});
+    });
+
+    async function postConsumerCommand(url, request) {
+        const resultBox = document.getElementById('consumerResultBox');
+        const resultAlert = document.getElementById('consumerResultAlert');
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(request)
+            });
+            const data = await response.json();
+            if (data.state) updateConsumerState(data.state);
+            showAlert(resultBox, resultAlert, data.success, data.success ? data.state.status : data.message);
+        } catch (err) {
+            showAlert(resultBox, resultAlert, false, 'Request failed: ' + err.message);
+        }
+    }
+
+    function showAlert(box, alert, success, message) {
+        box.style.display = '';
+        alert.className = 'alert mb-0 ' + (success ? 'alert-success' : 'alert-danger');
+        alert.textContent = message;
+    }
+
+    function updateConsumerState(state) {
+        consumerBadge.className = 'badge ' + (state.isRunning ? 'text-bg-success' : 'text-bg-secondary');
+        consumerBadge.textContent = state.status;
+    }
+
+    function addMessage(message) {
+        if (emptyRow) emptyRow.remove();
+        const row = document.createElement('tr');
+        row.innerHTML = '<td></td><td></td><td></td><td></td><td><pre class="mb-0 small text-wrap"></pre></td>';
+        row.children[0].textContent = new Date(message.receivedAt).toISOString();
+        row.children[1].textContent = message.topic;
+        row.children[2].textContent = message.key || '';
+        row.children[3].textContent = message.partition + '/' + message.offset;
+        row.children[4].querySelector('pre').textContent = message.payload;
+        messagesBody.prepend(row);
+        while (messagesBody.children.length > 100) {
+            messagesBody.removeChild(messagesBody.lastElementChild);
+        }
+    }
+
+    async function loadInitialState() {
+        const [stateResponse, messagesResponse] = await Promise.all([
+            fetch('/Home/ConsumerState'),
+            fetch('/Home/Messages')
+        ]);
+        updateConsumerState(await stateResponse.json());
+        const messages = await messagesResponse.json();
+        messages.reverse().forEach(addMessage);
+    }
+
+    const connection = new signalR.HubConnectionBuilder().withUrl('/kafka-messages').withAutomaticReconnect().build();
+    connection.on('messageReceived', addMessage);
+    connection.on('consumerStateChanged', updateConsumerState);
+
+    loadInitialState()
+        .then(() => connection.start())
+        .catch(err => console.error(err));
 </script>
