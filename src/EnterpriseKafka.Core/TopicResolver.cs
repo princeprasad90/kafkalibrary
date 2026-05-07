@@ -8,7 +8,7 @@ public sealed class DefaultTopicResolver(EnterpriseKafkaOptions options) : ITopi
 
     public string ResolveTopic(Type messageType)
     {
-        if (options.TopicMappings.TryGetValue(messageType.FullName ?? messageType.Name, out var mapped)) return ApplyEnvironment(mapped);
+        if (messageType.FullName is not null && options.TopicMappings.TryGetValue(messageType.FullName, out var mapped)) return ApplyEnvironment(mapped);
         if (options.TopicMappings.TryGetValue(messageType.Name, out mapped)) return ApplyEnvironment(mapped);
         var consumer = messageType.GetCustomAttributes(typeof(KafkaConsumerAttribute), true).Cast<KafkaConsumerAttribute>().FirstOrDefault();
         if (consumer is not null) return ApplyEnvironment(consumer.Topic);

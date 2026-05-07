@@ -80,7 +80,7 @@ public sealed class KafkaConsumerHostedService(
             catch (Exception ex)
             {
                 logger.LogError(ex, "Kafka consumer polling failed topic={Topic} groupId={GroupId}", topic, groupId);
-                if (result is null) await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
+                if (result is null) await Task.Delay(options.Consumer.PollErrorDelay, stoppingToken);
             }
         }
 
@@ -159,7 +159,9 @@ public sealed class KafkaConsumerHostedService(
     }
 
     private static IDictionary<string, string> ReadHeaders(Headers headers)
-        => headers.ToDictionary(h => h.Key, h => Encoding.UTF8.GetString(h.GetValueBytes()), StringComparer.OrdinalIgnoreCase);
+        => headers
+            .GroupBy(h => h.Key, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(group => group.Key, group => Encoding.UTF8.GetString(group.Last().GetValueBytes()), StringComparer.OrdinalIgnoreCase);
 
     private static void ApplySecurity(ConsumerConfig config, SecurityOptions security)
     {

@@ -98,8 +98,12 @@ public sealed class KafkaProducer : IKafkaProducer, IDisposable
         {
             foreach (var kv in source)
             {
-                headers.Remove(kv.Key);
-                headers.Add(kv.Key, Encoding.UTF8.GetBytes(kv.Value));
+                if (!string.Equals(kv.Key, "x-correlation-id", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(kv.Key, "content-type", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(kv.Key, "traceparent", StringComparison.OrdinalIgnoreCase))
+                {
+                    headers.Add(kv.Key, Encoding.UTF8.GetBytes(kv.Value));
+                }
             }
         }
 

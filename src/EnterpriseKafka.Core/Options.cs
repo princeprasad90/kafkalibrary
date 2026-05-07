@@ -63,6 +63,7 @@ public sealed class ConsumerOptions
     public bool CommitAfterSuccessfulProcessing { get; set; } = true;
     public int MaxPollIntervalMs { get; set; } = 300_000;
     public int ChannelCapacity { get; set; } = 1_000;
+    public TimeSpan PollErrorDelay { get; set; } = TimeSpan.FromSeconds(1);
 }
 
 public sealed class RetryOptions
@@ -196,12 +197,4 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-
-    public static IServiceCollection AddKafkaConsumer<TMessage, THandler>(this IServiceCollection services, Action<EnterpriseKafkaOptions>? configure = null)
-        where THandler : class, IKafkaHandler<TMessage>
-        => services.AddEnterpriseKafka(options =>
-        {
-            configure?.Invoke(options);
-            options.AddConsumer<TMessage, THandler>();
-        });
 }

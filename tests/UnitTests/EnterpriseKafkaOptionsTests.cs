@@ -39,7 +39,7 @@ public sealed class EnterpriseKafkaOptionsTests
 
 public sealed record OrderCreated(string Id);
 
-public sealed class OrderCreatedHandler : IKafkaHandler<OrderCreated>
+public sealed class OrderCreatedHandler : IKafkaMessageHandler<OrderCreated>
 {
     public Task HandleAsync(OrderCreated message, KafkaContext context, CancellationToken cancellationToken = default) => Task.CompletedTask;
 }
