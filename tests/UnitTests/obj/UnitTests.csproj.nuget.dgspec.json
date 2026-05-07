@@ -10,7 +10,7 @@
         "projectUniqueName": "/home/runner/work/kafkalibrary/kafkalibrary/src/EnterpriseKafka.Abstractions/EnterpriseKafka.Abstractions.csproj",
         "projectName": "EnterpriseKafka.Abstractions",
         "projectPath": "/home/runner/work/kafkalibrary/kafkalibrary/src/EnterpriseKafka.Abstractions/EnterpriseKafka.Abstractions.csproj",
-        "packagesPath": "/tmp/codeql-scratch-5114d2f03452f719/dbs/csharp/working/packages",
+        "packagesPath": "/home/runner/.nuget/packages/",
         "outputPath": "/home/runner/work/kafkalibrary/kafkalibrary/src/EnterpriseKafka.Abstractions/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -54,16 +54,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -79,7 +69,7 @@
         "projectUniqueName": "/home/runner/work/kafkalibrary/kafkalibrary/src/EnterpriseKafka.Core/EnterpriseKafka.Core.csproj",
         "projectName": "EnterpriseKafka.Core",
         "projectPath": "/home/runner/work/kafkalibrary/kafkalibrary/src/EnterpriseKafka.Core/EnterpriseKafka.Core.csproj",
-        "packagesPath": "/tmp/codeql-scratch-5114d2f03452f719/dbs/csharp/working/packages",
+        "packagesPath": "/home/runner/.nuget/packages/",
         "outputPath": "/home/runner/work/kafkalibrary/kafkalibrary/src/EnterpriseKafka.Core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -145,16 +135,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -170,7 +150,7 @@
         "projectUniqueName": "/home/runner/work/kafkalibrary/kafkalibrary/tests/UnitTests/UnitTests.csproj",
         "projectName": "UnitTests",
         "projectPath": "/home/runner/work/kafkalibrary/kafkalibrary/tests/UnitTests/UnitTests.csproj",
-        "packagesPath": "/tmp/codeql-scratch-5114d2f03452f719/dbs/csharp/working/packages",
+        "packagesPath": "/home/runner/.nuget/packages/",
         "outputPath": "/home/runner/work/kafkalibrary/kafkalibrary/tests/UnitTests/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -241,16 +221,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
