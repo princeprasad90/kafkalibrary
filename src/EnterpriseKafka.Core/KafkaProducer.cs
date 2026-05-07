@@ -12,7 +12,7 @@ public sealed class KafkaProducer : IKafkaProducer, IDisposable
     private readonly ITopicResolver _topicResolver;
     private readonly ILogger<KafkaProducer> _logger;
     private readonly IKafkaRetryEngine _retryEngine;
-    private readonly IProducer<string, byte[]> _producer;
+    private readonly IProducer<string?, byte[]> _producer;
 
     public KafkaProducer(EnterpriseKafkaOptions options, IMessageSerializer serializer, ITopicResolver topicResolver, IKafkaRetryEngine retryEngine, ILogger<KafkaProducer> logger)
     {
@@ -31,7 +31,7 @@ public sealed class KafkaProducer : IKafkaProducer, IDisposable
         };
 
         ApplySecurity(config, options.Security);
-        _producer = new ProducerBuilder<string, byte[]>(config).Build();
+        _producer = new ProducerBuilder<string?, byte[]>(config).Build();
     }
 
     public async Task<KafkaPublishResult> PublishAsync<T>(T message, KafkaPublishOptions? options = null, CancellationToken cancellationToken = default)
@@ -39,7 +39,7 @@ public sealed class KafkaProducer : IKafkaProducer, IDisposable
         var topic = options?.Topic ?? _topicResolver.ResolveTopic<T>();
         var correlationId = options?.CorrelationId ?? Guid.NewGuid().ToString("N");
         var context = new KafkaContext { Topic = topic, Key = options?.Key, CorrelationId = correlationId, Message = message! };
-        DeliveryResult<string, byte[]>? delivery = null;
+        DeliveryResult<string?, byte[]>? delivery = null;
 
         await _retryEngine.ExecuteAsync(async (_, token) =>
         {
@@ -48,7 +48,7 @@ public sealed class KafkaProducer : IKafkaProducer, IDisposable
             activity?.SetTag("messaging.destination.name", topic);
             activity?.SetTag("correlation.id", correlationId);
 
-            var kafkaMessage = new Message<string, byte[]>
+            var kafkaMessage = new Message<string?, byte[]>
             {
                 Key = options?.Key,
                 Value = _serializer.Serialize(message),
