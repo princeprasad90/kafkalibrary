@@ -9,7 +9,7 @@ EnterpriseKafka follows clean architecture boundaries:
 ## Core abstractions
 
 - `IKafkaProducer` publishes single messages and batches with serialization, keying, header enrichment, correlation ids, retries, tracing, partition targeting, and delivery metadata.
-- `IKafkaHandler<T>` / `IKafkaMessageHandler<T>` are strongly typed handler contracts. Handlers should contain business logic only.
+- `IKafkaHandler<T>` is the base strongly typed handler contract; `IKafkaMessageHandler<T>` inherits from it and is the recommended developer-facing name for new services. Handlers should contain business logic only.
 - `IKafkaMiddleware` provides ASP.NET Core-style middleware for logging, tracing, validation, idempotency, auditing, and custom cross-cutting concerns.
 - `IKafkaRetryEngine` isolates retry implementation; the default uses Polly and can be replaced.
 - `IMessageFailureStrategy` supports DLQ, ignore, database persistence, alert-only, stop-consumer, and custom handling.

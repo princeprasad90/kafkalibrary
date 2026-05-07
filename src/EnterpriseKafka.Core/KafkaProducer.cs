@@ -86,9 +86,13 @@ public sealed class KafkaProducer : IKafkaProducer, IDisposable
         var headers = new Headers
         {
             { "x-correlation-id", Encoding.UTF8.GetBytes(correlationId) },
-            { "content-type", Encoding.UTF8.GetBytes(contentType) },
-            { "traceparent", Encoding.UTF8.GetBytes(Activity.Current?.Id ?? string.Empty) }
+            { "content-type", Encoding.UTF8.GetBytes(contentType) }
         };
+
+        if (Activity.Current?.Id is { Length: > 0 } traceParent)
+        {
+            headers.Add("traceparent", Encoding.UTF8.GetBytes(traceParent));
+        }
 
         if (source is not null)
         {

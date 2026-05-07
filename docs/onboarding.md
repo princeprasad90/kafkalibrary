@@ -3,7 +3,7 @@
 1. Reference the smallest EnterpriseKafka package set needed by the service.
 2. Bind `Kafka` configuration from appsettings or secret-backed configuration providers.
 3. Register `AddEnterpriseKafka` and enable standard middleware: logging, tracing, retry, and validation.
-4. Implement `IKafkaMessageHandler<T>` for each message contract; do not place infrastructure code in handlers.
+4. Implement `IKafkaMessageHandler<T>` for each message contract; it inherits from `IKafkaHandler<T>` and is the recommended developer-facing name. Do not place infrastructure code in handlers.
 5. Configure topics using `[KafkaTopic]`, `TopicMappings`, or explicit consumer registrations.
 6. Select a failure strategy per service. DLQ is recommended for recoverable poison messages, but is not mandatory.
 7. Expose health checks and OpenTelemetry metrics/traces in every production microservice.

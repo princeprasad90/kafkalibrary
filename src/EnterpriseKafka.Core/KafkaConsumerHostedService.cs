@@ -3,6 +3,8 @@ using EnterpriseKafka.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace EnterpriseKafka.Core;
@@ -16,6 +18,9 @@ public sealed class KafkaConsumerHostedService(
     IServiceScopeFactory scopeFactory,
     ILogger<KafkaConsumerHostedService> logger) : BackgroundService
 {
+    private static readonly ConcurrentDictionary<Type, Func<KafkaConsumerHostedService, byte[], object>> Deserializers = new();
+    private static readonly ConcurrentDictionary<Type, Func<object, object, KafkaContext, CancellationToken, Task>> HandlerInvokers = new();
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         if (options.Consumers.Count == 0)
@@ -114,18 +119,37 @@ public sealed class KafkaConsumerHostedService(
     }
 
     private object Deserialize(Type messageType, byte[] payload)
-    {
-        var method = GetType().GetMethod(nameof(DeserializeTyped), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.MakeGenericMethod(messageType);
-        return method.Invoke(this, [payload])!;
-    }
+        => Deserializers.GetOrAdd(messageType, BuildDeserializer)(this, payload);
 
     private T DeserializeTyped<T>(byte[] payload) => serializer.Deserialize<T>(payload);
 
     private static Task InvokeHandlerAsync(object handler, Type messageType, object payload, KafkaContext context, CancellationToken cancellationToken)
     {
+        var invoker = HandlerInvokers.GetOrAdd(messageType, BuildHandlerInvoker);
+        return invoker(handler, payload, context, cancellationToken);
+    }
+
+    private static Func<KafkaConsumerHostedService, byte[], object> BuildDeserializer(Type messageType)
+    {
+        var service = Expression.Parameter(typeof(KafkaConsumerHostedService), "service");
+        var payload = Expression.Parameter(typeof(byte[]), "payload");
+        var method = typeof(KafkaConsumerHostedService)
+            .GetMethod(nameof(DeserializeTyped), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+            .MakeGenericMethod(messageType);
+        var call = Expression.Call(service, method, payload);
+        return Expression.Lambda<Func<KafkaConsumerHostedService, byte[], object>>(Expression.Convert(call, typeof(object)), service, payload).Compile();
+    }
+
+    private static Func<object, object, KafkaContext, CancellationToken, Task> BuildHandlerInvoker(Type messageType)
+    {
+        var handler = Expression.Parameter(typeof(object), "handler");
+        var payload = Expression.Parameter(typeof(object), "payload");
+        var context = Expression.Parameter(typeof(KafkaContext), "context");
+        var cancellationToken = Expression.Parameter(typeof(CancellationToken), "cancellationToken");
         var contract = typeof(IKafkaHandler<>).MakeGenericType(messageType);
         var method = contract.GetMethod(nameof(IKafkaHandler<object>.HandleAsync))!;
-        return (Task)method.Invoke(handler, [payload, context, cancellationToken])!;
+        var call = Expression.Call(Expression.Convert(handler, contract), method, Expression.Convert(payload, messageType), context, cancellationToken);
+        return Expression.Lambda<Func<object, object, KafkaContext, CancellationToken, Task>>(call, handler, payload, context, cancellationToken).Compile();
     }
 
     private static string? ReadHeader(Headers headers, string key)
