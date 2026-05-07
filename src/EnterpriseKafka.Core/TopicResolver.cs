@@ -4,11 +4,27 @@ namespace EnterpriseKafka.Core;
 
 public sealed class DefaultTopicResolver(EnterpriseKafkaOptions options) : ITopicResolver
 {
-    public string ResolveTopic<T>()
+    public string ResolveTopic<T>() => ResolveTopic(typeof(T));
+
+    public string ResolveTopic(Type messageType)
     {
-        var type = typeof(T);
-        if (options.TopicMappings.TryGetValue(type.FullName ?? type.Name, out var mapped)) return mapped;
-        var attr = type.GetCustomAttributes(typeof(KafkaTopicAttribute), true).Cast<KafkaTopicAttribute>().FirstOrDefault();
-        return attr?.Name ?? type.Name.ToLowerInvariant();
+        if (options.TopicMappings.TryGetValue(messageType.FullName ?? messageType.Name, out var mapped)) return ApplyEnvironment(mapped);
+        if (options.TopicMappings.TryGetValue(messageType.Name, out mapped)) return ApplyEnvironment(mapped);
+        var consumer = messageType.GetCustomAttributes(typeof(KafkaConsumerAttribute), true).Cast<KafkaConsumerAttribute>().FirstOrDefault();
+        if (consumer is not null) return ApplyEnvironment(consumer.Topic);
+        var attr = messageType.GetCustomAttributes(typeof(KafkaTopicAttribute), true).Cast<KafkaTopicAttribute>().FirstOrDefault();
+        return ApplyEnvironment(attr?.Name ?? messageType.Name.ToLowerInvariant());
+    }
+
+    public string ResolveRetryTopic(string sourceTopic, int attempt) => $"{sourceTopic}.{options.TopicNaming.RetrySuffix}{attempt}";
+
+    public string ResolveDeadLetterTopic(string sourceTopic) => $"{sourceTopic}.{options.TopicNaming.DeadLetterSuffix}";
+
+    private string ApplyEnvironment(string topic)
+    {
+        if (string.IsNullOrWhiteSpace(options.TopicNaming.Environment)) return topic;
+        return options.TopicNaming.EnvironmentAsPrefix
+            ? $"{options.TopicNaming.Environment}.{topic}"
+            : $"{topic}.{options.TopicNaming.Environment}";
     }
 }
