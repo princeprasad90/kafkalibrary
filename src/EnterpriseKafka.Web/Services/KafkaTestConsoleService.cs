@@ -160,7 +160,7 @@ public sealed class KafkaTestConsoleService(
         }
         catch (OperationCanceledException)
         {
-            // Expected when the test consumer is stopped or the application shuts down.
+            logger.LogDebug("Kafka test consumer stopped because cancellation was requested.");
         }
         catch (ConsumeException ex)
         {
