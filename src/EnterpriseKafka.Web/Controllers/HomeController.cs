@@ -55,7 +55,7 @@ public class HomeController(IKafkaProducer producer, KafkaTestConsoleService tes
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to start Kafka test consumer for topic {Topic}", request.Topic);
+            logger.LogError(ex, "Failed to start Kafka test consumer.");
             return StatusCode(500, new { success = false, message = "An error occurred while starting the consumer." });
         }
     }

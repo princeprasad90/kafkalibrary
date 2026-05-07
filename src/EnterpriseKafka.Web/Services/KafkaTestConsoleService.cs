@@ -160,16 +160,17 @@ public sealed class KafkaTestConsoleService(
         }
         catch (OperationCanceledException)
         {
+            // Expected when the test consumer is stopped or the application shuts down.
         }
         catch (ConsumeException ex)
         {
-            logger.LogError(ex, "Kafka consume failed for topic {Topic}", topic);
+            logger.LogError(ex, "Kafka consume failed for the active test-console topic.");
             var state = UpdateState(new(false, topic, groupId, $"Consumer error: {ex.Error.Reason}"));
             await hubContext.Clients.All.SendAsync("consumerStateChanged", state, CancellationToken.None);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Unexpected Kafka test consumer failure for topic {Topic}", topic);
+            logger.LogError(ex, "Unexpected Kafka test consumer failure for the active test-console topic.");
             var state = UpdateState(new(false, topic, groupId, "Consumer stopped because of an unexpected error."));
             await hubContext.Clients.All.SendAsync("consumerStateChanged", state, CancellationToken.None);
         }
