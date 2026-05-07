@@ -1,4 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/EnterpriseKafka.Core/EnterpriseKafka.Core.csproj" />
     <ProjectReference Include="../../src/EnterpriseKafka.Abstractions/EnterpriseKafka.Abstractions.csproj" />
